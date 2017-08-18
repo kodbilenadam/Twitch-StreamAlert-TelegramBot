@@ -1,0 +1,7 @@
+en:
+  telegram_webhooks:
+    start:
+      hi: Hi there!
+    alert:
+      bildirim_on: Videoyun'dan bildirim almaya başlayacaksın.
+      bildirim_off: Videoyun'dan bildirim almayacaksın.
