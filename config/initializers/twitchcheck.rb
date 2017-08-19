@@ -1,6 +1,8 @@
 thr = Thread.new do
   loop do
-    cevap = RestClient.get('https://api.twitch.tv/kraken/streams/videoyun', headers={'Client-ID': 'hndmr9nq1m74r78whfmj3v04m0jvbc'})
+    @server = Server.all
+    @server.each do |a|
+    cevap = RestClient.get('https://api.twitch.tv/kraken/streams/' +, headers={'Client-ID': 'hndmr9nq1m74r78whfmj3v04m0jvbc'})
     icerik = JSON.parse(cevap)
     if icerik['stream'] != nil
       onlinecount += 1
