@@ -10,9 +10,9 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
       @server = Server.create(name: args)
     else
     end
-    @user = @server.user.find_by(channel_id: from['id'])
+    @user = @server.users.find_by(channel_id: from['id'])
     if @user == nil
-      @server.user.create(channel_id: from['id'])
+      @server.users.create(channel_id: from['id'])
       respond_with :message, text: "#{args} #{t('.bildirim_on')}"
     else
       @user.destroy
