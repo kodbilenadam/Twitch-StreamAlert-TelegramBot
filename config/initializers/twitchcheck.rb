@@ -1,32 +1,41 @@
-thr = Thread.new do
-  loop do
-    @server = Server.all
-    @server.each do |a|
-    cevap = RestClient.get('https://api.twitch.tv/kraken/streams/' +, headers={'Client-ID': 'hndmr9nq1m74r78whfmj3v04m0jvbc'})
-    icerik = JSON.parse(cevap)
-    if icerik['stream'] != nil
-      onlinecount += 1
-    else
-      onlinecount = 0
-    end
-    sleep(300)
-  end
-end
-
-Thread.new do
-  loop do
-    if onlinecount == 1
-      dosya = File.read('kisiler.json')
-      kisiler = JSON.parse(dosya)
-      kisiler['videoyun'].each do |kisi|
-        channel = TelegramBot::Channel.new(id: kisi)
-        o = TelegramBot::OutMessage.new
-        o.chat = channel
-        o.text = "Videoyun yayın açtı."
-        o.send_with(bot)
-      end
-      onlinecount += 1
-    end
-    sleep(60)
-  end
-end
+# require "rest-client"
+# require "json"
+# puts "Sunucular aktifleştiriliyor"
+# thr = Thread.new do
+#   loop do
+#     online = {}
+#     online.default = 0
+#     @server = Server.all
+#     puts @server
+#     @server.each do |a|
+#       cevap = RestClient.get("https://api.twitch.tv/kraken/streams/#{a.name}", headers={'Client-ID': 'hndmr9nq1m74r78whfmj3v04m0jvbc'})
+#       puts "Parsing"
+#       icerik = JSON.parse(cevap)
+#       puts online
+#       if icerik['stream'] != nil
+#         online[a.name] += 1
+#       else
+#         online[a.name] = 0
+#       end
+#     end
+#     sleep(10)
+#
+#   end
+# end
+# puts "Second Thread starting"
+# Thread.new do
+#   loop do
+#     puts "Basliyo loop"
+#     online.each do |server, status|
+#       puts status
+#       if status == 1
+#         Server.find_by(name: server).users.all.each do |user|
+#           bot.send_message chat_id: user.channel_id, text: "#{server} yayın açtı."
+#           puts "Yayın açtı alert"
+#
+#         end
+#       end
+#     end
+#     sleep(2)
+#   end
+# end
