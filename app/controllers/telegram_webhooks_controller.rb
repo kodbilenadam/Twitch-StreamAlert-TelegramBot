@@ -9,9 +9,14 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     @server =  Server.find_by(name: args)
     if @server == nil
       puts "wtf"
+      begin
       cevap = RestClient.get("https://api.twitch.tv/kraken/channels/#{args}", headers={'Client-ID': 'hndmr9nq1m74r78whfmj3v04m0jvbc'})
-      puts "lul"
       icerik = JSON.parse(cevap)
+    rescue RestClient::ExceptionWithResponse => e
+      puts e.response
+      suitable = false
+      end
+      puts "lul"
       if icerik == nil
         suitable = false
         respond_with :message, text: "Böyle bir kanal bulunmamaktadır."
