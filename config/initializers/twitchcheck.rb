@@ -9,7 +9,7 @@ thr = Thread.new do
   loop do
     @servers = Server.all.to_a
     alert
-    sleep(20)
+    sleep(300)
   end
 end
 Thread.abort_on_exception = true
@@ -30,7 +30,11 @@ def alert
         @online[server.name] += 1
         if @online[server.name] == 1
           server.users.all.each do |user|
-            Telegram.bot.send_message chat_id: user.channel_id, text: "#{server.name} yayın açtı."
+            Telegram.bot.send_message chat_id: user.channel_id, text: "#{server.name} yayın açtı.", reply_markup: {
+      inline_keyboard: [
+        [{text: "Yayına git", url: "https://twitch.tv/#{server.name}"}],
+      ],
+    }
           end # each
         end # if online
       else
