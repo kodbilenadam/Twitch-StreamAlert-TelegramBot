@@ -13,7 +13,7 @@ thr = Thread.new do
   end
 end
 Thread.abort_on_exception = true
-#cakma queue deneme 1
+#cakma queue deneme 1.1
 def alert
   threads = []
   if @servers.length > 3
@@ -23,7 +23,6 @@ def alert
   end
   max.times do
     threads <<  Thread.new do
-      puts "hi"
       server = @servers.pop
       cevap = RestClient.get("https://api.twitch.tv/kraken/streams/#{server.name}", headers={'Client-ID': 'hndmr9nq1m74r78whfmj3v04m0jvbc'})
       icerik = JSON.parse(cevap)
@@ -37,6 +36,7 @@ def alert
       else
         @online[server.name] = 0
       end #if icerik
+      ActiveRecord::Base.connection.close
     end # thread
 end # times
 threads.each { |thrd| thrd.join  }
